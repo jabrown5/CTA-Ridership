@@ -2,8 +2,6 @@
 /* Source File: CTA_Ridership.csv */
 /* Source Path: /folders/myfolders/CTA */
 
-/* %web_drop_table(WORK.IMPORT); */
-
 FILENAME REFFILE '/folders/myfolders/CTA/CTA_Ridership.csv';
 
 PROC IMPORT DATAFILE=REFFILE
@@ -46,6 +44,7 @@ data 	CTAdata2
 run;
 
 
+
 /*****************************************************/
 /* CODE TO ASSESS QUESTION 1 */
 /* Which stop has the highest average ridership per day, and what is it? */
@@ -69,6 +68,7 @@ proc print data=CTAdata3 (obs=20);
 run;
 
 
+
 /*****************************************************/
 /* CODE TO ASSES QUESTION 2 */
 /* Which stop has the greatest standard deviation in weekday (exclude holidays) ridership per day, and what is it? */
@@ -90,6 +90,7 @@ run;
 
 proc print data=CTAweekday2 (obs=20);
 run;
+
 
 
 /*****************************************************/
@@ -123,6 +124,9 @@ run;
 proc print data=CTAevanston ;
 run;
 
+
+
+/*****************************************************/
 /* FIND STOPS WITH USAGE COMPARABLE TO EVANSTON MAIN ST */
 Proc summary data=CTAweekday ;
     class stationname  ;
@@ -143,6 +147,8 @@ run;
 PROC PRINT data=CTAcomparison2 (where=(stationname ne '' )); run;
 
 
+
+/*****************************************************/
 /* GETTING A SUMMARY OF "L" STATIONS FOUND ROUGHLY COMPARABLE TO EVANSTON MAIN ST */
 Proc summary data=CTAweekday (where=(stationname in ('Main','51st','California-Cermak','Cermak-McCormick Pla','Cicero-Forest Park','Damen-Cermak','Francisco') ));
     class stationname dayOfWeek ;
@@ -155,4 +161,3 @@ PROC PRINT data=CTAcomparisonAll (where=(stationname ne '' )); run;
 proc sgplot data=CTAcomparisonAll (where=(stationname ne '' and dayOfWeek ne .));
 	series x = dayOfWeek y=rides / markers group=stationname;
 run;
-/* %web_open_table(WORK.IMPORT); */
